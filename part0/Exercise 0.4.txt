@@ -1,0 +1,76 @@
+title Exercise 0.4
+browser->server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: HTML: /notes
+
+note over browser:
+Browser finds in HTML:
+src="/exampleapp/main.js"
+href="/exampleapp/main.css"
+And asks the server for them
+(first css and then js)
+end note
+
+browser->server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: CSS file: main.css
+browser->server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server-->browser: JS file: main.js
+
+note over browser:
+Browser executes JS code:
+makes a http petition:
+xhttp.open("GET", "/exampleapp/data.json", true)
+end note
+
+browser->server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: JSON file: data.json
+
+note over browser:
+Browser continues executing JS
+edits Dom to add JSON data
+Lastly browser asks for favicon image
+end note
+
+browser->server: GET https://studies.cs.helsinki.fi/favicon.ico
+server-->browser: ICO image: favicon.ico
+
+note right of browser
+Let's post a note on the website
+end note
+browser->server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+
+note left of server
+When server receives the POST DATA
+it updates the database or wherever it's
+storing the notes, and when it sends 
+data.json again, it will send the updated
+data.json file.
+end note
+
+note over browser:
+Browser passively receives
+a new HTML file from the server
+end note
+
+server->browser: HTML: /notes
+
+note over browser:
+The browser will read HTML the same way
+it received it for the first time. 
+NB: Even though JS file can be cached
+receiving an HTML file with the same JS code 
+will trigger it to execute again, so data.json
+is requested again
+end note
+
+note over browser:
+main.js, main.css and favicon.ico are cached
+end note
+
+browser->server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: JSON file: data.json
+
+note over browser
+Browser builds again HTML altering DOM
+with js code and the new data.json file
+end note
+
