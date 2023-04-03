@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom'
 
 // Define the main App component
 const App = () => {
-  // Define the course name and parts using an array of objects
-  const course = "Half Stack application development"
-  const parts = [
+  const course = {
+    name: 'Half Stack application development',
+    parts: [
     {
       name: 'Fundamentals of React',
       exercises: 10
@@ -18,14 +18,15 @@ const App = () => {
       name: 'State of a component',
       exercises: 14
     }
-  ]
+    ]
+  }
 
   // Return the App component with child components Header, Content, and Total  
   return (
     <div>
-    <Header course={course} />
-    <Content parts={parts}/>
-    <Total parts={parts} />
+    <Header course={course.name} />
+    <Content parts={course.parts}/>
+    <Total parts={course.parts} />
     </div> 
   )
 }
@@ -43,21 +44,16 @@ const Header = (props) => {
 
   // Define the Content component with props
 const Content = (props) => {
-  console.log(props)
-  console.log(props.parts)
-  props.parts.forEach(element => {
-    console.log(element.name + " " + element.exercises)
-    }
-  )
-  // Use map() to create an array of Part components for each part object in the parts array
-  // and return it wrapped in a React fragment
+  console.log(props.part)
+  
   return(
     <>
-    {props.parts.map(part => {
-      return <Part name={part.name} exercise={part.exercises}/>
-    })}
+      {props.parts.map((part) => (
+        <Part key={part.name} name={part.name} exercise={part.exercises} />
+      ))}
     </>
   )
+  
 }
 
 // Define the Part component with props
@@ -72,14 +68,20 @@ const Part = (props) => {
 }
 // Define the Total component with props
 const Total = (props) => {
+
+  console.log(props.parts)
+  let sum = 0
+  props.parts.forEach(element => {
+    sum += element.exercises
+  });
+  console.log(sum)
+
   return(
     <div>
-    <p>
-      Number of exercises = {props.number}
-    </p>
+      <p>The total sum of exercieses is {sum}</p>
     </div>
   )
 }
-
+  
 
 ReactDOM.render(<App></App>, document.getElementById('root'))
